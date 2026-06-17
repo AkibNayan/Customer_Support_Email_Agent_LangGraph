@@ -7,7 +7,7 @@ from langgraph.graph import END
 
 
 def read_email(state: EmailAgentState) -> dict:
-    """Extract and parse email content."""
+    """Extract and parse email content"""
     # In production, this would connect to your email service
     return {
         "messages": [
