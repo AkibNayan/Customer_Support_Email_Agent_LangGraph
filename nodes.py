@@ -11,7 +11,7 @@ def read_email(state: EmailAgentState) -> dict:
     # In production, this would connect to your email service
     return {
         "messages": [
-            HumanMessage(content=f"Processing email: {state['email_content']}")
+            HumanMessage(content=f"Processing email: {state.get('email_content')}")
         ]
     }
 
@@ -29,8 +29,8 @@ def classify_intent(
     classification_prompt = f"""
     Analyze this customer email and classify it:
 
-    Email: {state['email_content']}
-    From: {state['sender_email']}
+    Email: {state.get('email_content')}
+    From: {state.get('sender_email')}
 
     Provide classification including intent, urgency, topic and summary
     """
@@ -115,7 +115,7 @@ def draft_response(
     # Build the prompt with formatted context
     draft_prompt = f"""
     Draft a response to this customer email:
-    {state['email_content']}
+    {state.get('email_content')}
 
     Email intent: {classification.get('intent', 'unknown')}
     Urgency level: {classification.get('urgency', 'medium')}
@@ -176,5 +176,5 @@ def human_review(state: EmailAgentState) -> Command[Literal["send_reply", END]]:
 def send_reply(state: EmailAgentState) -> dict:
     """Send the email response"""
     # Integrate with email service
-    print(f"Sending reply: {state["draft_response"][:100]}...")
+    print(f"Sending reply: {state['draft_response']}")
     return {}

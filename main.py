@@ -38,3 +38,19 @@ workflow.add_edge("send_reply", END)
 memory = MemorySaver()
 
 app = workflow.compile(checkpointer=memory)
+
+config = {"configurable": {"thread_id": "customer_123"}}
+results = app.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "I was charged twice for my subscription! This is urgent for me!",
+            }
+        ]
+    },
+    config=config
+)
+
+for msg in results["messages"]:
+    msg.pretty_print()
